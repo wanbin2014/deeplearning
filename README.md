@@ -1,4 +1,29 @@
 # TensorFlow
+### 关于输入处理的流程
+#### list
+用于生成array
+#### np.array
+数组，用于生成matrix对象
+#### scipy.sparse.coo_matrix
+稀疏矩阵，通常有data,row index,column index 三个一维数组作为参数生成，coo_matrix(data,(row,column))，把用户的输入的数据转成该对象
+常用的方法有：
+shape 
+利用索引的列表可以重新生成一个新的稀疏矩阵
+
+
+#### scipy.sparse.csr_matrix
+ Compressed Sparse Row format ，可以有coo_matrix.tocsr()取得，通常我们总是吧coo_matrix转成它来节省空间。
+ 可以[] 获取里面的元素
+ 可以支持类似于[:,2:10]这样的slice操作
+ 
+ #### SparseTensorValue
+ 当输入是稀疏矩阵的时候，需要把最终数据转换成SparseTensorValue的格式，并在输入的placeholder设置成sparse_placeholder，这样就可以把矩阵传给tensorflow的网络。
+ 注意该对象的indices参数是[[x1,y1],[x2,y2]]的样子，要获取这个数据，需要把crs_matrix转成tocoo()格式后，取row和col属性，再transpose。如：
+ ```
+ coo = crs_matrix.tocoo()
+ indices = np.vstack((coo.row,coo.col)).transpose()
+ ```
+
 ### 预训练生成embedding的做法
 * 使用FM为n个特征单独特征预训练生成embedding，可以利用3层网络来生成，第一层：n*embedding_size 第二层：加入先验知识后的两两组合的内积 第三层:LR层。
 

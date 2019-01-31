@@ -7,3 +7,18 @@ tf.nn.embedding_lookup_sparse 和tf.sparse_mamtul都是根据输入的one-hot编
 #### 使用embeding向量
 在fnn模型结构里，预加载之前预训练生成的embedding向量，在获取embedding的时候，使用tf.sparse_matmul获取（目的是让embedding向量不更新），需要保证各特征的embedding的维度是一致，然后把多个特征的embedding向量concat起来，后面开始叠加网络结构。
 
+###conv2d的构造方法
+选择合适的filter的shape，[embed_size,filter_size(横跨字段的个数),in_channel, out_channel]。因为在embedding里不可分割，所以第一个字段大小是embedding_size的大小。 conv2d的内部的操作如下：
+input[batch,input_height,input_weight,in_channel] input_height是embeding_size，input_weight是字段数量
+filter[filter_height,filter_weight,in_channel,out_channel]
+
+1、把filter转成2维的,变成filter[filter_height*filter_weight*in_channel,out_channel] 
+2、从input中取一小块矩阵和filter做矩阵乘法,相当于[batch,out_height,out_weight, filter_height*filter_weight*in_channel] * [filter_height*filter_weight*in_channel,out_channel]
+3、最后output的shape[batch,out_height,out_weight,out_channel]
+
+当padding的方法是same,stride=[1,1,1,1]时：
+out_height = input_height 
+out_weight = input_weight
+
+
+

@@ -1,4 +1,4 @@
-# TensorFlow的神经网络构造
+# TensorFlow
 ### embedding的做法
 * 使用FM为n个特征单独特征预训练生成embedding，可以利用3层网络来生成，第一层：n*embedding_size 第二层：加入先验知识后的两两组合的内积 第三层:LR层。
 

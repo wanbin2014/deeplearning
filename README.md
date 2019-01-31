@@ -9,10 +9,10 @@ tf.nn.embedding_lookup_sparse 和tf.sparse_mamtul都是根据输入的one-hot编
 
 ### conv2d的构造方法 tf.nn.conv2d
 选择合适的filter的参数的shape，[embed_size,filter_size(横跨字段的个数),in_channel, out_channel]。因为在embedding里不可分割，所以第一个字段大小是embedding_size的大小。 conv2d的内部的操作如下：
-···
+```
 input[batch,input_height,input_weight,in_channel] input_height是embeding_size，input_weight是字段数量
 filter[filter_height,filter_weight,in_channel,out_channel]
-···
+```
 
  把filter转成2维的,变成filter[filter_height*filter_weight*in_channel,out_channel] 
  从input中取一小块矩阵和filter做矩阵乘法,相当于[batch,out_height,out_weight, filter_height*filter_weight*in_channel] * [filter_height*filter_weight*in_channel,out_channel]

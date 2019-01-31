@@ -3,7 +3,7 @@
 * 使用FM为n个特征单独特征预训练生成embedding，可以利用3层网络来生成，第一层：n*embedding_size 第二层：加入先验知识后的两两组合的内积 第三层:LR层。
 
 ##### tf.nn.embedding_lookup_sparse
-tf.nn.embedding_lookup_sparse 和tf.sparse_tensor_dense_matmul 都是通过one-hot编码，得到相应的embedding向量，区别是 embedding_lookup_sparse可以给每个id带权重
+tf.nn.embedding_lookup_sparse 和tf.sparse_tensor_dense_matmul 都是通过one-hot编码，得到相应的embedding向量，区别是 embedding_lookup_sparse可以给每个id带权重，embedding_lookup_sparse比sparse_tensor_dense_matmul更强大些。
 #### 使用embeding向量
 * 在fnn模型结构里，预加载之前预训练生成的embedding向量，在获取embedding的时候，使用tf.sparse_tensor_dense_matmul，需要保证各特征的embedding的维度是一致（貌似不一致也没太大关系），然后把多个特征的embedding向量concat起来，后面开始叠加网络结构。
 * 如果没有预加载，使用随机初始化的参数，可以完成，貌似这种方法更简洁。个人觉得区别在于速度。

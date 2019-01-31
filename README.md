@@ -1,11 +1,14 @@
 # TensorFlow
-### embedding的做法
+### 预训练生成embedding的做法
 * 使用FM为n个特征单独特征预训练生成embedding，可以利用3层网络来生成，第一层：n*embedding_size 第二层：加入先验知识后的两两组合的内积 第三层:LR层。
 
 ##### tf.nn.embedding_lookup_sparse
-tf.nn.embedding_lookup_sparse 和tf.sparse_mamtul都是根据输入的one-hot编码，得到相应的embedding向量，区别是 可以给每个id带权重，由于我们需要更新embedding更新，所以需要在预训练embedding过程中，需要使用tf.nn.embedding_lookup_sparse。
+tf.nn.embedding_lookup_sparse 和tf.sparse_tensor_dense_matmul 都是通过one-hot编码，得到相应的embedding向量，区别是 embedding_lookup_sparse可以给每个id带权重
 #### 使用embeding向量
-在fnn模型结构里，预加载之前预训练生成的embedding向量，在获取embedding的时候，使用tf.sparse_matmul获取（目的是让embedding向量不更新），需要保证各特征的embedding的维度是一致（貌似不一致也没太大关系），然后把多个特征的embedding向量concat起来，后面开始叠加网络结构。
+* 在fnn模型结构里，预加载之前预训练生成的embedding向量，在获取embedding的时候，使用tf.sparse_tensor_dense_matmul，需要保证各特征的embedding的维度是一致（貌似不一致也没太大关系），然后把多个特征的embedding向量concat起来，后面开始叠加网络结构。
+* 如果没有预加载，使用随机初始化的参数，可以完成，貌似这种方法更简洁。个人觉得区别在于速度。
+
+
 
 ### conv2d的构造方法 tf.nn.conv2d
 选择合适的filter的参数的shape，[embed_size,filter_size(横跨字段的个数),in_channel, out_channel]。因为在embedding里不可分割，所以第一个字段大小是embedding_size的大小。 conv2d的内部的操作如下：

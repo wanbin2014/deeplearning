@@ -1,7 +1,6 @@
 # TensorFlow
 ### 关于输入处理的流程
-#### list
-用于生成array
+
 #### np.array
 数组，用于生成matrix对象
 #### scipy.sparse.coo_matrix

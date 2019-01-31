@@ -35,6 +35,7 @@ tf.nn.embedding_lookup_sparse 和tf.sparse_tensor_dense_matmul 都是通过one-h
 
 
 ### conv2d的构造方法 tf.nn.conv2d
+当想提取局部特征时，比如3阶特征里是不是隐含着什么的时候，我们可以考虑加入conv2d层。
 选择合适的filter的参数的shape，[embed_size,filter_size(横跨字段的个数),in_channel, out_channel]。因为在embedding里不可分割，所以第一个字段大小是embedding_size的大小。 conv2d的内部的操作如下：
 ```
 input[batch,input_height,input_weight,in_channel] input_height是embeding_size，input_weight是字段数量
